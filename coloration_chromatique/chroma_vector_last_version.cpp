@@ -12,6 +12,24 @@
 	}
 
 
+	int occurence (int * k, int nbre_sommets, vector<string> nom_sommets, string pays, int existe){
+
+
+		for ((*k) = 0; (*k) < nbre_sommets; ++(*k))
+			{
+				if(pays==nom_sommets[(*k)]){
+					existe++;
+					break;
+
+				}
+
+			}
+
+			return existe;
+
+	}
+
+
 
 	int * chromatique(vector< vector<double> > &graph,int sommet_depart){
 
@@ -55,24 +73,16 @@
 		}
 
 
-		
-
-
-
 		return tab_couleurs;
 
-		
-
-
-			
-
 	}
+
 
 	int main(int argc, char const *argv[])
 	{
 
 
-	cout << "-----------------COLORATION DE CARTES-------------------------" <<endl
+	cout << "-----------------COLORATION DE CARTES-------------------------" <<endl;
 
 	int nbre_sommets;
 
@@ -81,21 +91,17 @@
 	cin >> nbre_sommets ; // Permet d'entrer le nombre de sommets
 
 	vector<vector <double> >graph(nbre_sommets,vector<double>(nbre_sommets,0));
-	//ou bien cette methode pour les mettre ˆ vide
-	//vector<vector <double> >graph; // tableau dynamique vide
 
 	string nom1_sommet="";
 	vector<string> nom_sommets;
 
-
 	cout << "Quel est le nom de ces pays" << endl;
-
 
 	for (int i = 0; i <nbre_sommets; ++i)
 	{
 
-
 		cin >> nom1_sommet;
+		cout << endl;
 
 
 		if (nom1_sommet.empty())
@@ -109,9 +115,7 @@
 			
 		}
 
-		nom_sommets.push_back(nom1_sommet);
-
-		
+		nom_sommets.push_back(nom1_sommet);	
 
 	}
 
@@ -120,7 +124,7 @@
 
 	for (int i = 0; i < nbre_sommets; ++i){
 
-		cout << "Combien de pays voulez-vous relies a  " << nom_sommets[i] << endl;
+		cout << "Combien de pays sont frontaliers au pays " << nom_sommets[i] << endl;
 
 		cin >> pays_a_relies;
 
@@ -132,14 +136,22 @@
 
 		for (int j = 0; j <pays_a_relies; ++j)
 		{
-			cin >> pays ;	
+			int existe=0;	
 			int k;
-			for (k = 0; k < nbre_sommets; ++k)
-			{
-				if(pays==nom_sommets[k]){
-					break;
 
-				}
+			cin >> pays;
+
+			existe=occurence(&k,nbre_sommets,nom_sommets,pays,existe);
+
+			cout << existe << endl;
+
+			while(existe==0){
+			
+			cout << "Veuillez entrez un nom de pays que vous avez deja choisi, pensez a l'orthographe" << endl;
+
+			cin >> pays;
+
+			existe=occurence(&k,nbre_sommets,nom_sommets,pays,existe);
 
 			}
 
@@ -149,8 +161,6 @@
 		}
 
 	}
-
-	
 
 	int * tab=new int[graph.size()];
 	tab=chromatique(graph,0);
@@ -162,6 +172,11 @@
 							
 		return 0;
 	}
+
+	/*bool bCestUnChiffre=false;
+if( strcmp( itoa( atoi( chaine ) ) , chaine ) == 0 )
+   bCestUnChiffre=true;
+   */
 
 	//std::vector<std::vector<int>> A(dimension, std::vector<int>(dimension));
 
