@@ -68,28 +68,29 @@ int * chromatique(vector< vector<double> > &graph,int sommet_depart){
 	for(int j=0;j<graph.size();j++){
 
 		for (int i = 0; i <graph[j].size();i++)
-		{	    
-if(graph[j][i]==0){					// si il n y'a aucune arête et que le sommet n'a pas encore de couleur, on lui donne la couleur du smmet de départ.
-	if(tab_couleurs[i]==-1){	        
-		tab_couleurs[i]=tab_couleurs[j];
-	}	        
-}
+		{	   
+
+		if(graph[j][i]==0){					// si il n y'a aucune arête et que le sommet n'a pas encore de couleur, on lui donne la couleur du smmet de départ.
+			if(tab_couleurs[i]==-1){	        
+				tab_couleurs[i]=tab_couleurs[j];
+			}	        
+		}
 
 
 
-else if(graph[j][i]==1){		
-	if (tab_couleurs[i]==-1){		// si il y a une arête mais aucune couleur on donne au sommet une couleur différente
-		tab_couleurs[i]=tab_couleurs[j]+1;
+		else if(graph[j][i]==1){		
+			if (tab_couleurs[i]==-1){		// si il y a une arête mais aucune couleur on donne au sommet une couleur différente
+				tab_couleurs[i]=tab_couleurs[j]+1;
 
-	}
+			}
 
 
-else if(tab_couleurs[i]==tab_couleurs[j]){ // si il y a une arête et une couleur identique on donne au sommet une couleur différente
-	tab_couleurs[i]=tab_couleurs[j]+1;
+			else if(tab_couleurs[i]==tab_couleurs[j]){ // si il y a une arête et une couleur identique on donne au sommet une couleur différente
+				tab_couleurs[i]=tab_couleurs[j]+1;
 
-}
+			}
 
-}
+		}
 
 
 }	
@@ -130,7 +131,8 @@ int main(int argc, char const *argv[])
 	for (int i = 0; i <nbre_sommets; ++i)
 	{
 
-		cin >> nom1_sommet;
+		cin >> nom_sommets[i];
+
 		cout << endl;
 
 	}
