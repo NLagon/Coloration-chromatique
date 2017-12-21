@@ -12,16 +12,27 @@ void arete(double sommet1,double sommet2, vector< vector<double> > &graph){
 }
 
 
-int occurence (int * k, int nbre_sommets, vector<string> nom_sommets, string pays, int existe){
+int occurence (int pays_actuel, int * k, int nbre_sommets, vector<string> nom_sommets, string pays, int existe){
 
 
 	for ((*k) = 0; (*k) < nbre_sommets; ++(*k))
 	{
-		if(pays==nom_sommets[(*k)]){
+
+		if (pays==nom_sommets[pays_actuel])
+		{
+			cout << "Un pays ne peut etre frontalier a lui-meme" << endl;
+			break;
+			
+		}
+
+
+		else if(pays==nom_sommets[(*k)]&& pays!=nom_sommets[pays_actuel]){
 			existe++;
 			break;
 
 		}
+
+		 
 
 	}
 
@@ -56,7 +67,7 @@ int estUnnombre(char*buff){
 
 
 
-int * chromatique(vector< vector<double> > &graph,int sommet_depart){
+int * chromatique(vector< vector<double> > &graph, int sommet_depart){
 
 	int * tab_couleurs=new int[graph.size()];
 	for(int i = 0; i <graph.size();i++)
@@ -119,7 +130,6 @@ int main(int argc, char const *argv[])
 	nbre_sommets=estUnnombre(buff);
 	int test=nbre_sommets;
 	cout << test << endl;
-// Permet d'entrer le nombre de sommets
 
 	vector<vector <double> >graph(nbre_sommets,vector<double>(nbre_sommets,0));
 
@@ -131,7 +141,9 @@ int main(int argc, char const *argv[])
 	for (int i = 0; i <nbre_sommets; ++i)
 	{
 
-		cin >> nom_sommets[i];
+		cin >> nom1_sommet;
+		nom_sommets.push_back(nom1_sommet);	
+
 
 		cout << endl;
 
@@ -146,9 +158,27 @@ int main(int argc, char const *argv[])
 
 		cin >> pays_a_relies;
 
+		while(pays_a_relies>=nbre_sommets){
+
+			if ( pays_a_relies==nbre_sommets )
+			{
+				cout <<"Un pays ne peut pas etre frontalier a lui-meme" << endl;
+				cout <<"Choisissez un autre pays" << endl;
+			}
+
+			else if ( pays_a_relies > nbre_sommets)
+			{
+			
+				cout << "Erreur: le nombre entre est superieur au nombre de sommets" << endl;
+			}
+
+			cin >> pays_a_relies;
+
+		}
+
 		cout << endl;
 
-		cout << " Lesquels ? "  << endl ;
+		cout << "Lesquels ? "  << endl ;
 
 		cout << endl;
 
@@ -159,17 +189,18 @@ int main(int argc, char const *argv[])
 
 			cin >> pays;
 
-			existe=occurence(&k,nbre_sommets,nom_sommets,pays,existe);
 
-			cout << existe << endl;
+
+			existe=occurence(i,&k,nbre_sommets,nom_sommets,pays,existe);
+
 
 			while(existe==0){
 
-				cout << "Veuillez entrez un nom de pays que vous avez deja choisi, pensez a l'orthographe" << endl;
+				cout << "Veuillez entrez un autre nom de pays qui est dans la carte " << endl;
 
 				cin >> pays;
 
-				existe=occurence(&k,nbre_sommets,nom_sommets,pays,existe);
+				existe=occurence(i,&k,nbre_sommets,nom_sommets,pays,existe);
 
 			}
 
