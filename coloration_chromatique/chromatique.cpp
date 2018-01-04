@@ -18,6 +18,7 @@ void chromatique(int  graph[][taille] ,int sommet_depart,int nbre_sommets){
     tab_couleurs[sommet_depart]=1; // couleur du 1 er sommet est initialisé à 1
     
     int j=0;
+    
     while(j<nbre_sommets){// tant que la file est vide, il y a un problème ici, voir plus bas
         
         
