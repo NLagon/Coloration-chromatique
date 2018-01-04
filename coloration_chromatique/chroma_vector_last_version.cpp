@@ -5,38 +5,51 @@
 using namespace std;
 
 
-void arete(double sommet1,double sommet2, vector< vector<double> > &graph){
+void arete(int sommet1,int sommet2, vector< vector<double> > &graph){
 
-	graph[sommet1][sommet2]=1;
-//graph[sommet2][sommet1]=1;
+	graph[(sommet1)][sommet2]=1;
 }
 
 
-int occurence (int pays_actuel, int * k, int nbre_sommets, vector<string> nom_sommets, string pays, int existe){
-
+void occurence (int * pays_actuel, int * k, int nbre_sommets, vector<string> nom_sommets, string pays, int existe){
 
 	for ((*k) = 0; (*k) < nbre_sommets; ++(*k))
 	{
-
-		if (pays==nom_sommets[pays_actuel])
+		if (pays==nom_sommets[(*pays_actuel)])
 		{
 			cout << "Un pays ne peut etre frontalier a lui-meme" << endl;
 			break;
-			
 		}
 
-
-		else if(pays==nom_sommets[(*k)]&& pays!=nom_sommets[pays_actuel]){
+		else if(pays==nom_sommets[(*k)]&& pays!=nom_sommets[(*pays_actuel)]){
 			existe++;
 			break;
-
 		}
-
-		 
 
 	}
 
-	return existe;
+	while(existe==0){
+
+		cout << "Veuillez entrez un autre nom de pays qui est dans la carte " << endl;
+		cin >> pays;
+
+		for ((*k) = 0; (*k) < nbre_sommets; ++(*k)){
+
+			if (pays==nom_sommets[(*pays_actuel)])
+			{
+				cout << "Un pays ne peut etre frontalier a lui-meme" << endl;
+				break;
+
+			}
+
+			if(pays==nom_sommets[(*k)]&& pays!=nom_sommets[(*pays_actuel)]){
+				existe++;
+				break;
+			}
+
+		}
+
+	}
 
 }
 
@@ -61,8 +74,6 @@ int estUnnombre(char*buff){
 	}
 
 	return atoi(buff);
-
-
 }
 
 
@@ -81,33 +92,30 @@ int * chromatique(vector< vector<double> > &graph, int sommet_depart){
 		for (int i = 0; i <graph[j].size();i++)
 		{	   
 
-		if(graph[j][i]==0){					// si il n y'a aucune arête et que le sommet n'a pas encore de couleur, on lui donne la couleur du smmet de départ.
-			if(tab_couleurs[i]==-1){	        
-				tab_couleurs[i]=tab_couleurs[j];
-			}	        
-		}
+			if(graph[j][i]==0){					// si il n y'a aucune arête et que le sommet n'a pas encore de couleur, on lui donne la couleur du smmet de départ.
+				if(tab_couleurs[i]==-1){	        
+					tab_couleurs[i]=tab_couleurs[j];
+				}	        
+			}
+
+			else if(graph[j][i]==1){		
+				if (tab_couleurs[i]==-1){		// si il y a une arête mais aucune couleur on donne au sommet une couleur différente
+					tab_couleurs[i]=tab_couleurs[j]+1;
+			}
 
 
+				else if(tab_couleurs[i]==tab_couleurs[j]){ // si il y a une arête et une couleur identique on donne au sommet une couleur différente
+					tab_couleurs[i]=tab_couleurs[j]+1;
 
-		else if(graph[j][i]==1){		
-			if (tab_couleurs[i]==-1){		// si il y a une arête mais aucune couleur on donne au sommet une couleur différente
-				tab_couleurs[i]=tab_couleurs[j]+1;
+				}
 
 			}
 
 
-			else if(tab_couleurs[i]==tab_couleurs[j]){ // si il y a une arête et une couleur identique on donne au sommet une couleur différente
-				tab_couleurs[i]=tab_couleurs[j]+1;
-
-			}
-
-		}
+		}	
 
 
-}	
-
-
-}
+	}
 
 
 return tab_couleurs;
@@ -118,19 +126,12 @@ return tab_couleurs;
 int main(int argc, char const *argv[])
 {
 
-
 	cout << "-----------------COLORATION DE CARTES-------------------------" <<endl;
 
 	int nbre_sommets;
-
 	cout <<"Combien de pays possedent cette carte" << endl;
-
 	char buff[100];
-
 	nbre_sommets=estUnnombre(buff);
-	int test=nbre_sommets;
-	cout << test << endl;
-
 	vector<vector <double> >graph(nbre_sommets,vector<double>(nbre_sommets,0));
 
 	string nom1_sommet="";
@@ -143,19 +144,16 @@ int main(int argc, char const *argv[])
 
 		cin >> nom1_sommet;
 		nom_sommets.push_back(nom1_sommet);	
-
-
 		cout << endl;
 
 	}
 
 	string pays;
 	int pays_a_relies;
-
-	for (int i = 0; i < nbre_sommets; ++i){
+	int  i;
+	for (i = 0; i < nbre_sommets; ++i){
 
 		cout << "Combien de pays sont frontaliers au pays " << nom_sommets[i] << endl;
-
 		cin >> pays_a_relies;
 
 		while(pays_a_relies>=nbre_sommets){
@@ -163,12 +161,12 @@ int main(int argc, char const *argv[])
 			if ( pays_a_relies==nbre_sommets )
 			{
 				cout <<"Un pays ne peut pas etre frontalier a lui-meme" << endl;
-				cout <<"Choisissez un autre pays" << endl;
+				cout <<"Choisissez un autre chiffre" << endl;
 			}
 
 			else if ( pays_a_relies > nbre_sommets)
 			{
-			
+
 				cout << "Erreur: le nombre entre est superieur au nombre de sommets" << endl;
 			}
 
@@ -177,45 +175,26 @@ int main(int argc, char const *argv[])
 		}
 
 		cout << endl;
-
 		cout << "Lesquels ? "  << endl ;
-
 		cout << endl;
 
 		for (int j = 0; j <pays_a_relies; ++j)
 		{
 			int existe=0;	
 			int k;
-
 			cin >> pays;
-
-
-
-			existe=occurence(i,&k,nbre_sommets,nom_sommets,pays,existe);
-
-
-			while(existe==0){
-
-				cout << "Veuillez entrez un autre nom de pays qui est dans la carte " << endl;
-
-				cin >> pays;
-
-				existe=occurence(i,&k,nbre_sommets,nom_sommets,pays,existe);
-
-			}
-
+			occurence(&i,&k,nbre_sommets,nom_sommets,pays,existe);
 			cout << endl;
 			arete(i,k,graph);
-
 		}
 
 	}
 
 	int * tab=new int[graph.size()];
 	tab=chromatique(graph,0);
-	for (int i = 0; i < graph.size(); ++i)
+	for (int p = 0; p < graph.size(); ++p)
 	{
-		printf(" (%s,%d)\n",nom_sommets[i].c_str(),tab[i]);								
+		printf("(%s,%d)\n",nom_sommets[p].c_str(),tab[p]);								
 	}
 
 
